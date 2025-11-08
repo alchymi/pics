@@ -39,16 +39,36 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
     #lightbox.open { display: flex; }
     #lightbox img { max-width: 95vw; max-height: 90vh; }
   </style>
+  <script>
+  // Lazy loading avec IntersectionObserver
+  const lazyImages = document.querySelectorAll('.lazy');
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.onload = () => {
+          img.classList.remove('opacity-0');
+        };
+        obs.unobserve(img);
+      }
+    });
+  }, {
+    rootMargin: '200px 0px',  // précharge légèrement avant d’arriver
+    threshold: 0.01
+  });
+
+  lazyImages.forEach(img => observer.observe(img));
+</script>
 </head>
+
 <body class="bg-zinc-950 text-zinc-100">
   <header class="sticky top-0 z-40 bg-zinc-900/80 backdrop-blur border-b border-zinc-800">
     <div class="mx-auto max-w-7xl px-4 py-3 flex items-center gap-3">
       <h1 class="text-xl font-semibold">pics.funtools.cloud</h1>
       <span class="text-sm text-zinc-400">— <?= count($files) ?> images</span>
-      <div class="ml-auto flex items-center gap-2">
-        <a href="/upload.php" class="text-xs px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500">Upload API</a>
-        <button id="copyIndex" class="text-xs px-3 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600">Copy page URL</button>
-      </div>
+ 
     </div>
   </header>
 
@@ -57,13 +77,13 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
     <div class="masonry columns-1 sm:columns-2 md:columns-3 lg:columns-4">
       <?php foreach ($files as $img): ?>
         <figure class="masonry-item group overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800">
-          <img
-            src="<?= htmlspecialchars($img['url']) ?>"
-            alt="<?= htmlspecialchars($img['name']) ?>"
-            loading="lazy"
-            class="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02] cursor-zoom-in"
-            onclick="openLightbox('<?= htmlspecialchars($img['url']) ?>', '<?= htmlspecialchars($img['name']) ?>')"
-          >
+<img
+  src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+  data-src="<?= htmlspecialchars($img['url']) ?>"
+  alt="<?= htmlspecialchars($img['name']) ?>"
+  class="lazy w-full h-auto opacity-0 transition-all duration-500 ease-out group-hover:scale-[1.02] cursor-zoom-in"
+  onclick="openLightbox('<?= htmlspecialchars($img['url']) ?>', '<?= htmlspecialchars($img['name']) ?>')"
+>
           <figcaption class="px-3 py-2 text-xs text-zinc-400 flex items-center justify-between">
             <span class="truncate" title="<?= htmlspecialchars($img['name']) ?>"><?= htmlspecialchars($img['name']) ?></span>
             <button
