@@ -39,28 +39,7 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
     #lightbox.open { display: flex; }
     #lightbox img { max-width: 95vw; max-height: 90vh; }
   </style>
-  <script>
-  // Lazy loading avec IntersectionObserver
-  const lazyImages = document.querySelectorAll('.lazy');
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.onload = () => {
-          img.classList.remove('opacity-0');
-        };
-        obs.unobserve(img);
-      }
-    });
-  }, {
-    rootMargin: '200px 0px',  // précharge légèrement avant d’arriver
-    threshold: 0.01
-  });
-
-  lazyImages.forEach(img => observer.observe(img));
-</script>
 </head>
 
 <body class="bg-zinc-950 text-zinc-100">
@@ -131,5 +110,31 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
     }
     document.getElementById('copyIndex')?.addEventListener('click', () => copyToClipboard(location.href));
   </script>
+
+
+  <script>
+  // Lazy loading avec IntersectionObserver
+  const lazyImages = document.querySelectorAll('.lazy');
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.onload = () => {
+          img.classList.remove('opacity-0');
+        };
+        obs.unobserve(img);
+      }
+    });
+  }, {
+    rootMargin: '200px 0px',  // précharge légèrement avant d’arriver
+    threshold: 0.01
+  });
+
+  lazyImages.forEach(img => observer.observe(img));
+</script>
+
+
 </body>
 </html>
