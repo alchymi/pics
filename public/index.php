@@ -1,7 +1,7 @@
 <?php
 // public/index.php
-$dir = __DIR__ . '/pics/pictures';
-$base = '/pics/pictures'; // chemin web
+$dir = __DIR__ . '/pictures';
+$base = '/pictures'; // chemin web
 $files = [];
 if (is_dir($dir)) {
   foreach (scandir($dir) as $f) {
