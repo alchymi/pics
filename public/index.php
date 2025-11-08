@@ -57,12 +57,11 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
       <?php foreach ($files as $img): ?>
         <figure class="masonry-item group overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800">
 <img
-  src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
-  data-src="<?= htmlspecialchars($img['url']) ?>"
-  alt="<?= htmlspecialchars($img['name']) ?>"
-  class="lazy w-full h-auto opacity-0 transition-all duration-500 ease-out group-hover:scale-[1.02] cursor-zoom-in"
-  onclick="openLightbox('<?= htmlspecialchars($img['url']) ?>', '<?= htmlspecialchars($img['name']) ?>')"
->
+  src="<?= htmlspecialchars($img['url']) ?>"
+  loading="lazy"
+  decoding="async"
+  class="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02] cursor-zoom-in"
+/>
           <figcaption class="px-3 py-2 text-xs text-zinc-400 flex items-center justify-between">
             <span class="truncate" title="<?= htmlspecialchars($img['name']) ?>"><?= htmlspecialchars($img['name']) ?></span>
             <button
@@ -112,28 +111,6 @@ usort($files, fn($a,$b) => $b['ts'] <=> $a['ts']); // plus récent d’abord
   </script>
 
 
-  <script>
-  // Lazy loading avec IntersectionObserver
-  const lazyImages = document.querySelectorAll('.lazy');
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.onload = () => {
-          img.classList.remove('opacity-0');
-        };
-        obs.unobserve(img);
-      }
-    });
-  }, {
-    rootMargin: '200px 0px',  // précharge légèrement avant d’arriver
-    threshold: 0.01
-  });
-
-  lazyImages.forEach(img => observer.observe(img));
-</script>
 
 
 </body>
