@@ -72,14 +72,15 @@ $total = count($files);
 
     <?php foreach ($initial as $img): ?>
       <div class="item rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800">
-        <img
-          src="<?= $img['url'] ?>"
-          loading="lazy"
-          class="w-full h-auto cursor-pointer"
-          style="aspect-ratio: <?= $img['w'] ?>/<?= $img['h'] ?>"
-          data-pswp-width="<?= $img['w'] ?>"
-          data-pswp-height="<?= $img['h'] ?>"
-        >
+<img
+    src="<?= '/thumbs/' . $img['name'] ?>"
+    data-full="<?= $img['url'] ?>"
+    loading="lazy"
+    class="w-full h-auto cursor-pointer"
+    style="aspect-ratio: <?= $img['w'] ?>/<?= $img['h'] ?>"
+    data-pswp-width="<?= $img['w'] ?>"
+    data-pswp-height="<?= $img['h'] ?>"
+>
       </div>
     <?php endforeach; ?>
 
