@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  php:
+    build: .
+    container_name: php-webapp
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html
+      - pictures:/var/www/html/pictures
+      - thumbs:/var/www/html/thumbs
+    restart: unless-stopped
+
+volumes:
+  pictures:
+  thumbs:

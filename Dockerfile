@@ -7,18 +7,21 @@ RUN apt-get update && apt-get install -y \
  && docker-php-ext-install gd \
  && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache stuff
+# Enable Apache modules
 RUN a2enmod rewrite headers
 
 # Copy app
 COPY public/ /var/www/html/
 COPY php.ini /usr/local/etc/php/conf.d/zz-custom.ini
 
-# Create upload + thumbnail folders
+# Create upload folders
 RUN mkdir -p /var/www/html/pictures \
     /var/www/html/thumbs \
  && chown -R www-data:www-data /var/www/html \
  && chmod -R 755 /var/www/html
+
+# Declare persistent folders
+VOLUME ["/var/www/html/pictures", "/var/www/html/thumbs"]
 
 EXPOSE 80
 
